@@ -1,0 +1,342 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% To add a comment, just add \YOURINITIALS{your comment}
+\newcommand{\EP}[1]{\textcolor{red}{[EP: #1]}}
+\newcommand{\JB}[1]{\textcolor{purple}{[JB: #1]}}
+\newcommand{\EM}[1]{\textcolor{cyan}{[EM: #1]}}
+\newcommand{\BF}[1]{\textcolor{orange}{[BF: #1]}}
+\newcommand{\AM}[1]{\textcolor{blue}{[AM: #1]}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%COLORS
+\pgfdeclareverticalshading{rainbow}{100bp}
+{color(0bp)=(red); color(25bp)=(red); color(35bp)=(yellow);
+color(45bp)=(green); color(55bp)=(cyan); color(65bp)=(blue);
+color(75bp)=(violet); color(100bp)=(violet)}
+%Dark blue grey
+\definecolor{DarkBlueGrey}{RGB}{76,94,107}
+%Medium blue grey
+\definecolor{MediumBlueGrey}{RGB}{110,135,153}
+%Light blue grey
+\definecolor{LightBlueGrey}{RGB}{134,163,184}
+%Weak coupling orange
+\definecolor{BalancedOrange}{RGB}{242,146,29}
+%Strong coupling red
+\definecolor{DarkRed}{RGB}{179,48,48}
+%gluon line
+\definecolor{SalmonPink}{RGB}{255,172,172}
+%self-energy
+\definecolor{SEColor}{RGB}{134,163,184}
+
+%Circled numbers
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+%% DEFINE MATH COMMANDS
+\newcommand{\op}[1]{\boldsymbol{#1}}
+\newcommand{\de}{\mathrm d}
+\newcommand{\sumint}{\ \mathclap{\displaystyle\int}\mathclap{\textstyle\sum}\ \ }
+\newcommand{\Tr}{\operatorname{Tr}}
+%Partial derivative
+\newcommand{\pd}{\partial}
+\newcommand{\spd}{\slashed{\partial}}
+\newcommand{\sx}{\slashed{x}}
+%Sign function
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Disc}{Disc}
+\DeclareMathOperator{\dDisc}{dDisc}
+\DeclareMathOperator{\Res}{Res}
+%Pfaffian
+\newcommand{\Pf}{\text{Pf}\ }
+%Super-Pfaffian
+\newcommand{\SPf}{\text{SPf}\ }
+%Dilogarithm
+\newcommand{\Li}{{\normalfont\text{Li}}}
+%Vev
+\newcommand{\vvev}[1]{\langle\!\langle\, #1 \, \rangle\!\rangle}
+\newcommand{\vev}[1]{\langle\, #1 \, \rangle}
+%VarEpsilon
+\def\veps{\varepsilon}
+
+%%OTHER
+\def\Op{{\mathcal{O}}}
+\def\Oh{{\widehat{\mathcal{O}}}}
+\newcommand{\Db}{\bar{\Delta}}
+\newcommand{\Dh}{{\widehat{\Delta}}}
+\newcommand{\zb}{{\bar{z}}}
+\newcommand{\tlambda}{\tilde{\lambda}}
+\newcommand{\tg}{\tilde{g}}
+\newcommand{\vh}{\widehat{v}}
+\newcommand\Fb{{\bar{F}}}
+\newcommand{\nh}{\widehat{n}}
+\newcommand{\AdSfive}{AdS$_5 \times S^5$}
+\newcommand{\bh}{\widehat{b}}
+\newcommand{\kh}{\widehat{k}}
+\newcommand{\ch}{\widehat{c}}
+\newcommand{\bt}{\tilde{b}}
+\newcommand{\phat}{\widehat{p}}
+\newcommand{\Qb}{\bar{Q}}
+\newcommand{\Sb}{\bar{S}}
+\newcommand{\sigmab}{\bar{\sigma}}
+\newcommand{\Wt}{\tilde{W}}
+\newcommand{\Zb}{\bar{Z}}
+\newcommand{\alphah}{\hat{\alpha}}
+\newcommand{\alphad}{\dot{\alpha}}
+\newcommand{\betad}{\dot{\beta}}
+\newcommand{\idh}{\hat{\mathds{1}}}
+\newcommand{\id}{\mathds{1}}
+\newcommand{\lambdah}{\hat{\lambda}}
+\newcommand{\hh}{\hat{h}}
+\newcommand{\fh}{\hat{f}}
+\newcommand{\gammah}{\hat{\gamma}}
+\newcommand{\Fh}{\hat{F}}
+\newcommand{\ellb}{\bar{\ell}}
+\newcommand{\Do}{{\Delta_{\Op}}}
+
+\newcommand{\Ah}{\hat{\mathcal{A}}}
+\newcommand{\Bh}{\hat{\mathcal{B}}}
+\newcommand{\Ch}{\hat{\mathcal{C}}}
+%\newcommand{\Dh}{\hat{\mathcal{D}}}
+\newcommand{\Eh}{\hat{\mathcal{E}}}
+%\newcommand{\Fh}{\hat{\mathcal{F}}}
+\newcommand{\Gh}{\hat{\mathcal{G}}}
+\newcommand{\Hh}{\hat{\mathcal{H}}}
+\newcommand{\Ih}{\hat{\mathcal{I}}}
+\newcommand{\Jh}{\hat{\mathcal{J}}}
+\newcommand{\Kh}{\hat{\mathcal{K}}}
+\newcommand{\Lh}{\hat{\mathcal{L}}}
+\newcommand{\Mh}{\hat{\mathcal{M}}}
+\newcommand{\Nh}{\hat{\mathcal{N}}}
+%\newcommand{\Oh}{\hat{\mathcal{O}}}
+\newcommand{\Ph}{\hat{\mathcal{P}}}
+\newcommand{\Qh}{\hat{\mathcal{Q}}}
+\newcommand{\Rh}{\hat{\mathcal{R}}}
+\newcommand{\Sh}{\hat{\mathcal{S}}}
+\newcommand{\Th}{\hat{\mathcal{T}}}
+\newcommand{\Uh}{\hat{\mathcal{U}}}
+\newcommand{\Vh}{\hat{\mathcal{V}}}
+\newcommand{\Wh}{\hat{\mathcal{W}}}
+\newcommand{\Xh}{\hat{\mathcal{X}}}
+\newcommand{\Yh}{\hat{\mathcal{Y}}}
+\newcommand{\Zh}{\hat{\mathcal{Z}}}
+
+\newcommand{\OR}{\sigma}
+% \newcommand{\OR}{\Omega_\text{R}}
+
+\def\Am{{\mathcal{A}}}
+\def\Bm{{\mathcal{B}}}
+\def\Cm{{\mathcal{C}}}
+\def\Dm{{\mathcal{D}}}
+\def\Em{{\mathcal{E}}}
+\def\Fm{{\mathcal{F}}}
+\def\Gm{{\mathcal{G}}}
+\def\Hm{{\mathcal{H}}}
+\def\Im{{\mathcal{I}}}
+\def\Jm{{\mathcal{J}}}
+\def\Km{{\mathcal{K}}}
+\def\Lm{{\mathcal{L}}}
+\def\Mm{{\mathcal{M}}}
+\def\Nm{{\mathcal{N}}}
+\def\Om{{\mathcal{O}}}
+\def\Pm{{\mathcal{P}}}
+\def\Qm{{\mathcal{Q}}}
+\def\Rm{{\mathcal{R}}}
+\def\Sm{{\mathcal{S}}}
+\def\Tm{{\mathcal{T}}}
+\def\Um{{\mathcal{U}}}
+\def\Vm{{\mathcal{V}}}
+\def\Wm{{\mathcal{W}}}
+\def\Xm{{\mathcal{X}}}
+\def\Ym{{\mathcal{Y}}}
+\def\Zm{{\mathcal{Z}}}
+
+\def\Ads{{\mathds{A}}}
+\def\Bds{{\mathds{B}}}
+\def\Cds{{\mathds{C}}}
+\def\Dds{{\mathds{D}}}
+\def\Eds{{\mathds{E}}}
+\def\Fds{{\mathds{F}}}
+\def\Gds{{\mathds{G}}}
+\def\Hds{{\mathds{H}}}
+\def\Ids{{\mathds{I}}}
+\def\Jds{{\mathds{J}}}
+\def\Kds{{\mathds{K}}}
+\def\Lds{{\mathds{L}}}
+\def\Mds{{\mathds{M}}}
+\def\Nds{{\mathds{N}}}
+\def\Ods{{\mathds{O}}}
+\def\Pds{{\mathds{P}}}
+\def\Qds{{\mathds{Q}}}
+\def\Rds{{\mathbb{R}}}
+\def\Sds{{\mathds{S}}}
+\def\Tds{{\mathds{T}}}
+\def\Uds{{\mathds{U}}}
+\def\Vds{{\mathds{V}}}
+\def\Wds{{\mathds{W}}}
+\def\Xds{{\mathds{X}}}
+\def\Yds{{\mathds{Y}}}
+\def\Zds{{\mathds{Z}}}
+
+%% HELP FUNCTION FOR DIAGRAMS: gluon lines are symmetric
+\newif\ifstartcompletesineup
+\newif\ifendcompletesineup
+\pgfkeys{
+    /pgf/decoration/.cd,
+    start up/.is if=startcompletesineup,
+    start up=true,
+    start up/.default=true,
+    start down/.style={/pgf/decoration/start up=false},
+    end up/.is if=endcompletesineup,
+    end up=true,
+    end up/.default=true,
+    end down/.style={/pgf/decoration/end up=false}
+}
+\pgfdeclaredecoration{complete sines}{initial}
+{
+    \state{initial}[
+        width=+0pt,
+        next state=upsine,
+        persistent precomputation={
+            \ifstartcompletesineup
+                \pgfkeys{/pgf/decoration automaton/next state=upsine}
+                \ifendcompletesineup
+                    \pgfmathsetmacro\matchinglength{
+                        0.5*\pgfdecoratedinputsegmentlength / (ceil(0.5* \pgfdecoratedinputsegmentlength / \pgfdecorationsegmentlength) )
+                    }
+                \else
+                    \pgfmathsetmacro\matchinglength{
+                        0.5 * \pgfdecoratedinputsegmentlength / (ceil(0.5 * \pgfdecoratedinputsegmentlength / \pgfdecorationsegmentlength ) - 0.499)
+                    }
+                \fi
+            \else
+                \pgfkeys{/pgf/decoration automaton/next state=downsine}
+                \ifendcompletesineup
+                    \pgfmathsetmacro\matchinglength{
+                        0.5* \pgfdecoratedinputsegmentlength / (ceil(0.5 * \pgfdecoratedinputsegmentlength / \pgfdecorationsegmentlength ) - 0.4999)
+                    }
+                \else
+                    \pgfmathsetmacro\matchinglength{
+                        0.5 * \pgfdecoratedinputsegmentlength / (ceil(0.5 * \pgfdecoratedinputsegmentlength / \pgfdecorationsegmentlength ) )
+                    }
+                \fi
+            \fi
+            \setlength{\pgfdecorationsegmentlength}{\matchinglength pt}
+        }] {}
+    \state{downsine}[width=\pgfdecorationsegmentlength,next state=upsine]{
+        \pgfpathsine{\pgfpoint{0.5\pgfdecorationsegmentlength}{0.5\pgfdecorationsegmentamplitude}}
+        \pgfpathcosine{\pgfpoint{0.5\pgfdecorationsegmentlength}{-0.5\pgfdecorationsegmentamplitude}}
+    }
+    \state{upsine}[width=\pgfdecorationsegmentlength,next state=downsine]{
+        \pgfpathsine{\pgfpoint{0.5\pgfdecorationsegmentlength}{-0.5\pgfdecorationsegmentamplitude}}
+        \pgfpathcosine{\pgfpoint{0.5\pgfdecorationsegmentlength}{0.5\pgfdecorationsegmentamplitude}}
+}
+    \state{final}{}
+}
+
+\newcommand{\dx}{\text{d}x}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\warning}[1]{{\red{ {#1}}}}
+\newcommand{\reminder}[1]{({\green{ {#1}}})}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\sourav}[1]{{\blue{ {#1}}}}
+\def\bra#1{%
+  \left\langle\smash{#1}{\vphantom1}\right|}
+\def\ket#1{%
+  \left|\smash{#1}{\vphantom1}\right\rangle}
+%\def\eq#1{Eq.~(\ref{#1})}
+\newcommand{\secn}[1]{Section~\ref{#1}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\beq}{\begin{eqnarray}}
+\newcommand{\eeq}{\end{eqnarray}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\e}{\epsilon}
+\newcommand{\ord}{{\cal O}}
+\newcommand{\as}{\alpha_s}
+\newcommand{\daniele}[1]{\textbf{\textcolor{orange}{[DA: #1]}}}
+
+%%%%%%%%%%%%%%%% Adam %%%%%%%%%%%%%%%%%%
+
+\usepackage[T1]{fontenc} % if needed
+\newcommand{\oD}{\bar{D}}
+\newcommand{\oE}{\bar{E}}
+\newcommand{\oR}{\bar{R}}
+\newcommand{\oW}{\bar{W}}
+\newcommand{\oG}{\bar{\Gamma}}
+\newcommand{\oK}{\mathring{K}}
+\newcommand{\II}{\mathrm{I\hspace{-0.02cm} I}}
+\newcommand{\oII}{\mathring{\II}}
+\newcommand{\CA}{\mathcal{A}}
+\newcommand{\CB}{\mathcal{B}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\CD}{\mathcal{D}}
+\newcommand{\CE}{\mathcal{E}}
+\newcommand{\CF}{\mathcal{F}}
+\newcommand{\CH}{\mathcal{H}}
+\newcommand{\CI}{\mathcal{I}}
+\newcommand{\CJ}{\mathcal{J}}
+\newcommand{\CK}{\mathcal{K}}
+\newcommand{\CL}{\mathcal{L}}
+\newcommand{\CM}{\mathcal{M}}
+\newcommand{\CN}{\mathcal{N}}
+\newcommand{\CO}{\mathcal{O}}
+\newcommand{\CP}{\mathcal{P}}
+\newcommand{\CQ}{\mathcal{Q}}
+\newcommand{\CT}{\mathcal{T}}
+\newcommand{\CW}{\mathcal{W}}
+\newcommand{\CX}{\mathcal{X}}
+\newcommand{\CZ}{\mathcal{Z}}
+\newcommand{\Ff}{\mathfrak{f}^{\text{\tiny bdy}}}
+\newcommand{\Ffbulk}{\mathfrak{f}^{\text{\tiny blk}}}
+\newcommand{\FF}{\mathfrak{F}^{\text{\tiny bdy}}}
+\newcommand{\CPS}{\CP_\Sigma}
+\newcommand{\CPM}{\CP_\CM}
+\newcommand{\tCB}{\tilde{\CB}}
+\newcommand{\g}{\gamma}
+\newcommand{\s}{\sigma}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+
+\newcommand{\w}{\omega}
+\renewcommand{\de}{\delta}
+\newcommand{\dw}{\delta\omega_1}
+\newcommand{\dww}{\delta\omega_2}
+\newcommand{\oB}{\mathring{\Box}}
+\newcommand\eq[1]{eq.~(\ref{eq:#1})}
+\newcommand{\ul}{\underline}
+\newcommand{\G}{\Gamma}
+\newcommand{\iu}{\text{i}}
+\newcommand{\gYM}{g_{\text{\tiny YM}}}
+\newcommand{\discmo}{\underset{\xi<-1}{\text{disc}}}
+\newcommand{\discmoz}{\underset{-1<\xi<0}{\text{disc}}}
+\newcommand{\Ffbdy}{\mathfrak{f}^{\text{\tiny bdy}}}
+
+\newcommand{\bD}{\bar{D}}
+\newcommand{\Fcl}{F^\mathrm{cl}}
+\newcommand{\Acl}{A^\mathrm{cl}}
+\newcommand{\pcl}{\varphi^\mathrm{cl}}
+\newcommand{\nabladef}{\nabla_\mathrm{3d}}
+\newcommand{\p}{\partial}
+\newcommand{\vp}{\varphi}
+\newcommand{\bP}{\bar{\Phi}}
+\newcommand{\bPs}{\bar{\Psi}}
+\newcommand{\Pcl}{\Phi^\mathrm{cl}}
+\newcommand{\bPcl}{\bar{\Phi}^\mathrm{cl}}
+\newcommand{\bAp}{\bar{A}_\perp}
+\newcommand{\Ap}{A_\perp}
+\newcommand{\bap}{\bar{a}_\perp}
+\newcommand{\ap}{a_\perp}
+\newcommand{\Fdef}{\mathfrak{f}^\mathrm{def}}
+\newcommand{\Fbdy}{\mathfrak{f}^\mathrm{bdy}}
+
+\DeclareMathOperator{\uu}{\mathfrak{u}}
+\DeclareMathOperator{\su}{\mathfrak{su}}
+\DeclareMathOperator{\psu}{\mathfrak{psu}}
+\DeclareMathOperator{\so}{\mathfrak{so}}
+\DeclareMathOperator{\iso}{\mathfrak{iso}}
+\DeclareMathOperator{\osp}{\mathfrak{osp}}
+\DeclareMathOperator{\MPS}{\text{MPS}}
+
+\renewcommand{\d}{\text{d}}

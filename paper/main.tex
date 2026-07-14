@@ -1,0 +1,119 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,11pt]{article}
+%\pdfoutput=1
+
+%%%%%%%%%%%%%%%% Comment %%%%%%%%%%%%%%%%%%
+%%% To add a comment, just add \YOURINITIALS{your comment}
+\newcommand{\DA}[1]{\textbf{\textcolor{orange}{[DA: #1]}}}
+\newcommand{\LG}[1]{\textbf{\textcolor{blue}{[LG: #1]}}}
+\newcommand{\DR}[1]{\textcolor{red}{[DR: #1]}}
+\newcommand{\MT}[1]{\textcolor{purple}{MT: #1]}}
+
+%%%%%%%%%%%%%%%% Daniele %%%%%%%%%%%%%%%%%%
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{auxi/jheppub}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{auxi/mhsetup}
+\usepackage{auxi/mathtools}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{subfig}
+\usepackage{multicol}
+\usepackage{pdfpages}
+\usepackage{float}
+\usepackage{tikz-feynman}
+\usepackage{lscape}
+\usepackage{bm}
+\usepackage{bbm}
+\newtheorem{theorem}{Theorem}
+\usepackage{aligned-overset}
+\input{./auxi/commands.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --------------------------------------------------
+% Title and Author Info
+% --------------------------------------------------
+
+\title{Free Water Access Under Urban Heat Stress: Mapping Drinking Fountain Accessibility and Climate Vulnerability in Italian Cities}
+
+%%% Authors
+
+\author[a]{Daniele Artico,}
+\author{Ludovica Gatti,}
+\author{Davide Ravaglia,}
+\author{Matilde Torrassa}
+
+%%% Affiliation
+
+\affiliation[a]{Dipartimento SMFI, Universit\`a di Parma, Viale G.P. Usberti 7/A, 43100, Parma, Italy and INFN
+Gruppo Collegato di Parma}
+
+%%% E-mail addresses
+
+\emailAdd{daniele.artico@unipr.it}
+
+\abstract{This project evaluates whether Italian cities’ free public drinking-water infrastructure is spatially aligned with present and future heat-health risk. Combining mapped fountains, walking-distance accessibility, heatwave indicators, urban heat exposure, demographic vulnerability, and available health-burden data, the project identifies neighborhoods where climate adaptation through free water access is insufficient.}
+
+\begin{document}
+\maketitle
+\noindent
+
+\section{Introduction}
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{../create_f_density_map/fountain_density_italy_pitch.png}
+\end{figure}
+\section{Fountain accessibility}
+Share of population within 250m or 500m walking distance of a fountain.
+\begin{itemize}
+\item	fountains per $km^2$
+\item	fountains per 1000 residents
+\item	fountains per 1000 elderly residents
+\item	median walking distance to nearest fountain
+\item	share of residents within 250 m or 500 m
+\item	share of vulnerable residents within 250 m ot 500 m
+\item	correlation with average income distribution
+\end{itemize}
+
+\section{Heat exposure and vulnerability}
+For each city or neighborhood, compute:
+\begin{itemize}
+\item	historical heatwave days;
+\item	tropical nights;
+\item	annual maximum temperature;
+\item	projected increase in maximum temperature;
+\item	projected increase in heatwave days;
+\item	elderly population share;
+\item	socioeconomic deprivation;
+\item	impervious surface;
+\item	tree cover;
+\item	urban heat island intensity.
+\end{itemize}
+\section{Data analysis}
+Compute correlation matrices between variables in the previous sections. We expect there may be non-uniform mapping effects: we could repeat the analysis for urban areas such as
+\subsection{Turin}
+\subsection{Milan}
+\subsection{Rome}
+\subsection{Naples}
+%\clearpage
+%\section*{Bibliography}
+%\addcontentsline{toc}{section}{Bibliography}
+\appendix
+
+
+\acknowledgements
+
+
+\bibliography{auxi/refs.bib}
+\bibliographystyle{auxi/JHEP}
+
+
+\end{document}
