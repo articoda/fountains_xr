@@ -13,11 +13,86 @@ from rasterio.mask import mask
 # Import plotting_extent to get the spatial extent of a raster image.
 from rasterio.plot import plotting_extent
 
+# Import raster reprojection tools.
+from rasterio.warp import calculate_default_transform, reproject, Resampling
+
 # Import matplotlib for plotting.
 import matplotlib.pyplot as plt
 
 # Import LogNorm for logarithmic color scaling.
 from matplotlib.colors import LogNorm
+
+# Import rasterize to convert vector points into a raster grid.
+from rasterio.features import rasterize
+
+# Import MergeAlg so multiple fountains in the same raster cell are counted, not overwritten.
+from rasterio.enums import MergeAlg
+
+
+def reproject_population_raster(
+    input_raster,
+    output_raster,
+    dst_crs="EPSG:3035",
+    resolution=100
+):
+    """
+    Reproject a WorldPop population raster to a metric CRS.
+
+    The output raster has pixels of size `resolution` meters.
+    For example, resolution=100 gives 100 m x 100 m cells.
+
+    This is useful because distances such as 250 m and 500 m should be
+    computed in a projected CRS measured in meters, not in longitude/latitude.
+    """
+
+    # Open the original WorldPop raster.
+    with rasterio.open(input_raster) as src:
+
+        # Check that the input raster has a CRS.
+        if src.crs is None:
+            raise ValueError("The input population raster has no CRS.")
+
+        # Compute the transform, width, and height of the reprojected raster.
+        transform, width, height = calculate_default_transform(
+            src.crs,
+            dst_crs,
+            src.width,
+            src.height,
+            *src.bounds,
+            resolution=resolution
+        )
+
+        # Copy the metadata from the original raster.
+        kwargs = src.meta.copy()
+
+        # Update the metadata for the output raster.
+        # Compression keeps the new GeoTIFF smaller on disk.
+        kwargs.update({
+            "crs": dst_crs,
+            "transform": transform,
+            "width": width,
+            "height": height,
+            "nodata": src.nodata,
+            "compress": "lzw",
+            "tiled": True,
+            "bigtiff": "if_safer"
+        })
+
+        # Create the reprojected output raster.
+        with rasterio.open(output_raster, "w", **kwargs) as dst:
+
+            # Reproject the first raster band.
+            # WorldPop values are population counts per cell,
+            # so Resampling.sum is the safest option when changing grid.
+            reproject(
+                source=rasterio.band(src, 1),
+                destination=rasterio.band(dst, 1),
+                src_transform=src.transform,
+                src_crs=src.crs,
+                dst_transform=transform,
+                dst_crs=dst_crs,
+                resampling=Resampling.sum
+            )
 
 
 def load_worldpop_points(
@@ -31,6 +106,9 @@ def load_worldpop_points(
 
     Each output point represents the centre of one raster cell.
     The column "population" contains the population value of that raster cell.
+
+    Warning: this can create millions of points and use a lot of memory.
+    For the main accessibility analysis, the raster-based strategy is better.
     """
 
     # Open the WorldPop raster file.
@@ -215,3 +293,55 @@ def plot_worldpop_density(
 
     # Show the figure.
     plt.show()
+
+def rasterize_fountains_like_population(
+    fountains,
+    population_raster
+):
+    """
+    Rasterize fountain points onto the same grid as the population raster.
+
+    Output:
+    - fountain_raster: array where each cell contains the number of fountains in that cell.
+    - raster_transform: spatial transform of the raster.
+    - raster_crs: CRS of the raster.
+
+    This is useful because later we can compare fountain locations and population
+    using raster operations on the same grid.
+    """
+
+    # Open the population raster.
+    # We use it as a template for shape, transform, and CRS.
+    with rasterio.open(population_raster) as src:
+
+        # Reproject the fountain points to the CRS of the population raster.
+        fountains_same_crs = fountains.to_crs(src.crs)
+
+        # Build a list of geometries to burn into the raster.
+        # Each fountain receives value 1.
+        shapes = [
+            (geom, 1)
+            for geom in fountains_same_crs.geometry
+            if geom is not None and not geom.is_empty
+        ]
+
+        # Rasterize the fountain points.
+        # `merge_alg=MergeAlg.add` means that if multiple fountains fall in the same
+        # raster cell, they are added together instead of overwriting each other.
+        fountain_raster = rasterize(
+            shapes=shapes,
+            out_shape=(src.height, src.width),
+            transform=src.transform,
+            fill=0,
+            dtype="uint32",
+            merge_alg=MergeAlg.add
+        )
+
+        # Store the raster transform.
+        raster_transform = src.transform
+
+        # Store the raster CRS.
+        raster_crs = src.crs
+
+    # Return the rasterized fountains and raster metadata.
+    return fountain_raster, raster_transform, raster_crs
