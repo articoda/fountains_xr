@@ -10,6 +10,9 @@ from matplotlib.colors import LogNorm
 # Import plotting_extent to place raster data correctly on the map.
 from rasterio.plot import plotting_extent
 
+# Import Affine to update the raster transform after aggregation.
+from affine import Affine
+
 
 def plot_fountain_density_hexbin(
     fountains,
@@ -68,8 +71,8 @@ def plot_fountain_density_hexbin(
     # Save the figure.
     plt.savefig(output_file, dpi=300)
 
-    # Show the figure on screen.
-    plt.show()
+    # Close the figure on screen.
+    plt.close()
 
 def plot_fountain_density_raster(
     fountain_raster,
@@ -153,24 +156,8 @@ def plot_fountain_density_raster(
     # Save the figure.
     plt.savefig(output_file, dpi=300)
 
-    # Show the figure.
-    plt.show()
-
-# Import numpy for array operations.
-import numpy as np
-
-# Import matplotlib for plotting.
-import matplotlib.pyplot as plt
-
-# Import LogNorm for logarithmic color scaling.
-from matplotlib.colors import LogNorm
-
-# Import Affine to update the raster transform after aggregation.
-from affine import Affine
-
-# Import plotting_extent to place raster data correctly on the map.
-from rasterio.plot import plotting_extent
-
+    # Close the figure.
+    plt.close()
 
 def aggregate_raster_sum(raster, transform, factor):
     """
@@ -289,6 +276,164 @@ def plot_aggregated_fountain_raster(
     # Adjust layout.
     plt.tight_layout()
 
-    # Save and show.
+    # Save and close.
     plt.savefig(output_file, dpi=300)
-    plt.show()
+    plt.close()
+
+def plot_accessible_population_raster(
+    accessible_population_map,
+    raster_transform,
+    raster_crs,
+    boundary,
+    output_file,
+    threshold=250,
+    title=None
+):
+    """
+    Plot population cells that are within a given distance of a fountain.
+
+    The raster values are population per cell.
+    Cells outside the accessibility threshold are NaN and are not plotted.
+    """
+
+    # Use a default title if none is provided.
+    if title is None:
+        title = f"Population within {threshold} m of a drinking-water fountain"
+
+    # Keep only positive accessible population values.
+    positive_values = accessible_population_map[
+        np.isfinite(accessible_population_map) &
+        (accessible_population_map > 0)
+    ]
+
+    # Stop if there is no accessible population.
+    if len(positive_values) == 0:
+        raise ValueError("No accessible population found for this threshold.")
+
+    # Use robust color limits so extreme cells do not dominate.
+    vmin = max(np.nanpercentile(positive_values, 1), 0.001)
+    vmax = np.nanpercentile(positive_values, 99.5)
+
+    # Avoid LogNorm problems if all values are nearly identical.
+    if vmax <= vmin:
+        vmax = vmin + 1
+
+    # Compute spatial extent of the raster.
+    extent = plotting_extent(accessible_population_map, raster_transform)
+
+    # Reproject the boundary to the raster CRS.
+    boundary_for_plot = boundary.to_crs(raster_crs)
+
+    # Extract map limits from the boundary.
+    xmin, ymin, xmax, ymax = boundary_for_plot.total_bounds
+
+    # Create figure and axes.
+    fig, ax = plt.subplots(figsize=(8, 10))
+
+    # Plot accessible population cells.
+    img = ax.imshow(
+        accessible_population_map,
+        extent=extent,
+        origin="upper",
+        cmap="magma",
+        norm=LogNorm(vmin=vmin, vmax=vmax)
+    )
+
+    # Plot Italy boundary.
+    boundary_for_plot.boundary.plot(ax=ax, linewidth=0.7, color="black")
+
+    # Add colorbar.
+    cbar = plt.colorbar(img, ax=ax, shrink=0.75)
+
+    # Label colorbar.
+    cbar.set_label(
+        f"Population per raster cell within {threshold} m, log scale"
+    )
+
+    # Set map limits.
+    ax.set_xlim(xmin, xmax)
+    ax.set_ylim(ymin, ymax)
+
+    # Remove axes.
+    ax.set_axis_off()
+
+    # Add title.
+    ax.set_title(title, fontsize=15)
+
+    # Adjust layout.
+    plt.tight_layout()
+
+    # Save figure.
+    plt.savefig(output_file, dpi=300)
+
+    # Close figure so the script does not stop.
+    plt.close(fig)
+
+def plot_accessibility_share_raster(
+    accessibility_share,
+    raster_transform,
+    raster_crs,
+    boundary,
+    output_file,
+    threshold=250,
+    title=None
+):
+    """
+    Plot the percentage of population within a given distance of a fountain.
+
+    Each cell value is a percentage from 0 to 100.
+    """
+
+    # Use default title if none is provided.
+    if title is None:
+        title = f"Share of population within {threshold} m of a drinking-water fountain"
+
+    # Compute raster extent.
+    extent = plotting_extent(accessibility_share, raster_transform)
+
+    # Reproject boundary to raster CRS.
+    boundary_for_plot = boundary.to_crs(raster_crs)
+
+    # Extract map bounds.
+    xmin, ymin, xmax, ymax = boundary_for_plot.total_bounds
+
+    # Create figure and axes.
+    fig, ax = plt.subplots(figsize=(8, 10))
+
+    # Plot accessibility share.
+    img = ax.imshow(
+        accessibility_share,
+        extent=extent,
+        origin="upper",
+        cmap="viridis",
+        vmin=0,
+        vmax=100
+    )
+
+    # Plot Italy boundary.
+    boundary_for_plot.boundary.plot(ax=ax, linewidth=0.7, color="black")
+
+    # Add colorbar.
+    cbar = plt.colorbar(img, ax=ax, shrink=0.75)
+
+    # Label colorbar.
+    cbar.set_label(f"Population with access within {threshold} m (%)")
+
+    # Set map limits.
+    ax.set_xlim(xmin, xmax)
+    ax.set_ylim(ymin, ymax)
+
+    # Remove axes.
+    ax.set_axis_off()
+
+    # Add title.
+    ax.set_title(title, fontsize=15)
+
+    # Adjust layout.
+    plt.tight_layout()
+
+    # Save figure.
+    plt.savefig(output_file, dpi=300)
+
+    # Close figure so the script does not stop.
+    plt.close(fig)
