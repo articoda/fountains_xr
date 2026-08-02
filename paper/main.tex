@@ -12,10 +12,14 @@
 
 %%%%%%%%%%%%%%%% Daniele %%%%%%%%%%%%%%%%%%
 
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
 \usepackage{auxi/jheppub}
+
+\usepackage{lmodern}
+\usepackage{microtype}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -65,12 +69,78 @@ Gruppo Collegato di Parma}
 \begin{document}
 \maketitle
 \noindent
+\section{Project pitch}
+
+%General background: what we know
+Heatwaves are increasingly becoming a major urban public-health risk: the years 2015–2025 constitute the eleven warmest consecutive years since global temperature records began. 
+Thousands of additional deaths are being recorded every year in Europe due to events of extreme heat, and climate change is expected to make heatwaves more frequent and more intense.
+However, urban heat risk is not only meteorological. 
+Several factors contribute to making heatwaves more survivable or, in the worst case, less managable from a public healt point of view.
+These factors include, and are not limited to: exposure, age, health, income, mobility, housing, shade, and access to cooling resources.
+The European Union Climate Adaptation Strategy has already established that providing free access to water for both drinking and cooling purposes is fundamental to address extreme heat in cities, especially during heatwaves.
+Drinking fountains can reduce heat-stress risk and support hydration in public space; and existing studies already mention heat-stroke reduction as one core benefit.
+Moreover, fountains can also have positive social effects: they can be used as meeting places fostering community ownership of a public space. Heat-adaptation infrastructure is often studied through cooling centers, green space, shade, and shelters.
+On the other hand, research on public drinking fountains in the scientific literature is fairly limited, and we did not identify any sistematic study involving Italy.\\
+ 
+%Specific background: what is missing?
+The existing literature has mostly focused on single cities, with the declared intent of mapping sites for priority improvement and demographic characteristics of communities near the water fountains.
+A public health approach has been applied to cooling-center accessibility, which has been studied for heat-vulnerable populations, including the variables of walking-distance and transport access. Heat vulnerability stands at the core of the analysis performed for the city on Vancouver, with the purpose of creating an equitable drinking fountain placement framework. 
+What is missing for Italy is a national (or multi-city) analysis connecting public drinking fountains to population-weighted accessibility, with a particular focus on present heatwave exposure and future heat projections.\\
+
+%The gap we want to fill
+This research gap undermines our understanding of the degree of adaptation of free public drinking-water infrastructure to current and future climate needs. 
+In other words, we do not know whether areas most exposed to heatwaves are also areas with poor public water access. 
+Additionally, we do not know whether elderly or vulnerable populations are systematically better or worse served than the general population. T
+he project fills this gap by treating public drinking-water fountains as measurable climate-adaptation infrastructure and testing whether their accessibility is spatially aligned with heatwave vulnerability.\\
+%
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{../code_folder/fountain_density_italy_pitch.png}
+\caption{Map of fountain distribution in Italy. Data were collected from the project \href{https://github.com/matitalatina/fontanelle}{Fontanelle in Italia}.}
+\label{fig:fount_dens}
+\end{figure}
+%
+
+%Preliminary work: part of the answer
+%You have already collected geolocated fountain data for Italy.
+Foundational to this work is the availability of data on public fountains distribution in Italy. 
+Our project relies on Open Street Map data, collected through the project \href{https://github.com/matitalatina/fontanelle}{Fontanelle in Italia} available on GitHub. 
+A preliminary analisys produced a national fountain-density map shown in Fig~\ref{fig:fount_dens}. 
+A second key dataset is the population distribution in Italy, which we obtained from the WorldPop gridded population data. 
+Combined, these two datasets give access to a first accessibility metric: population within 250 m of a drinking-water fountain, presented in Fig.~\ref{fig:250m_avail}. 
+This preliminary pattern clearly shows spatially uneven accessibility with visible underserved areas, which strenghtens the motivation for this research.\\
+
+%
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{../code_folder/share_population_within_250m_of_fountain.png}
+\caption{Map of fountain availability within 250m in Italy.}
+\label{fig:250m_avail}
+\end{figure}
+%
+
+% Central hypothesis and testing
+Our core hypothesis is that public drinking-water fountains are an under-recognized form of urban heat-adaptation infrastructure, and in Italy their spatial distribution is not aligned with present and future heat vulnerability. 
+We plan to test our hypothesis across three layers, focused on accessibility, heat exposure and vulnerability. 
+A final stage will evaluate the spatial mismatch to identify priority areas for public drinking-water adaptation.
+The first layer will expand on the preliminary analysis by repeating the analysis for residents within 500m from a fountain and the median distance to nearest fountain for each cell. 
+The share of people within a certan distance may serve as measurement to test against regression model prediction based on the heat sensitivity built in the second layer.  
+The heat exposure layer is built from CERRA data and consists in establishing the current heatwave frequency, intensity, and the frequency of tropical nights. Future exposure will be established using data from CMIP6 Climate Projections for the 1985–2100 Period, using statistical downscaling over Italy using EQM.
+The third layer of the analysis will deal with vulnerability metrics, including share of elderly population, socioeconomic conditions, outdoor worker presence and health indicators, if accessible.\\
+
+%If the hypothesis is right, what do we learn?
+If the analysis supports our hypothesis, we confirm that Italy has spatial inequalities in free public water access exposing some populations to enhanced heatwave sentitivity.
+The project would introduce a reproducible indicator of hydration accessibility that municipalities can use to identify priority locations for new fountains, framed as low-cost, actionable climate-adaptation infrastructure.
+%If the hypothesis is wrong, what do we learn?
+The project remains interesting even in the case that data do not support our hypothesis: some cities may offer examples of good adaptation practice, and the developed method can identify which municipalities are already successful.
+The project would shift from adaptation gap to best-practice mapping, quantifying an adaptation asset that is usually invisible.\\
+
+In both cases, the project would have several beneficial impact on the scientific and policy-maker communities, by connecting climate risk to everyday urban infrastructure.
+It would provide a concrete, policy-relevant map of public water accessibility, while helping municipalities prioritize new fountain installation.
+Local communities would receive data support for heatwave adaptation planning, reinforcing environmental-justice arguments; scientists and academics would benefit from the open code and reproducible spatial indicators.
 
 \section{Introduction}
-\begin{figure}[!h]
-\centering
-\includegraphics[scale=0.4]{../create_f_density_map/fountain_density_italy_pitch.png}
-\end{figure}
+
 \section{Fountain accessibility}
 Share of population within 250m or 500m walking distance of a fountain.
 \begin{itemize}

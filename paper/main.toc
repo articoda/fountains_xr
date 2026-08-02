@@ -1,9 +1,10 @@
 \babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Fountain accessibility}{2}{section.2}%
-\contentsline {section}{\numberline {3}Heat exposure and vulnerability}{2}{section.3}%
-\contentsline {section}{\numberline {4}Data analysis}{2}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Turin}{3}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Milan}{3}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Rome}{3}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Naples}{3}{subsection.4.4}%
+\contentsline {section}{\numberline {1}Project pitch}{1}{section.1}%
+\contentsline {section}{\numberline {2}Introduction}{4}{section.2}%
+\contentsline {section}{\numberline {3}Fountain accessibility}{4}{section.3}%
+\contentsline {section}{\numberline {4}Heat exposure and vulnerability}{4}{section.4}%
+\contentsline {section}{\numberline {5}Data analysis}{5}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Turin}{5}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Milan}{5}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Rome}{5}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Naples}{5}{subsection.5.4}%
