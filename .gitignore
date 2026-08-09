@@ -3,3 +3,6 @@
 
 # Ignore old files
 .old/
+
+# Ignore large shape files
+code_folder/limiti_istat

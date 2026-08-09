@@ -437,3 +437,34 @@ def plot_accessibility_share_raster(
 
     # Close figure so the script does not stop.
     plt.close(fig)
+
+def choose_plot_settings(analysis_level):
+    """
+    Choose plotting and aggregation settings depending on the analysis scale.
+    """
+
+    if analysis_level == "italy":
+        return {
+            "aggregation_factor": 50,      # 50 * 100 m = 5 km
+            "min_total_population": 500,
+            "hexbin_gridsize": 150,
+            "cell_label": "5km"
+        }
+
+    if analysis_level == "region":
+        return {
+            "aggregation_factor": 10,      # 10 * 100 m = 1 km
+            "min_total_population": 50,
+            "hexbin_gridsize": 120,
+            "cell_label": "1km"
+        }
+
+    if analysis_level == "town":
+        return {
+            "aggregation_factor": 1,       # 5 * 100 m = 500 m
+            "min_total_population": 10,
+            "hexbin_gridsize": 80,
+            "cell_label": "100m"
+        }
+
+    raise ValueError(f"Unknown analysis level: {analysis_level}")
