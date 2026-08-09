@@ -1,8 +1,19 @@
-# Ignore tif files
-*.tif
-
 # Ignore old files
 .old/
 
-# Ignore large shape files
-code_folder/limiti_istat
+# Large rasters
+*.tif
+*.tifi
+*.tiff
+*.vrt
+*.ovr
+*.aux.xml
+
+# ISTAT boundaries
+code_folder/limiti_istat/
+
+# Raw downloaded archives
+code_folder/data/raw/
+
+# Generated plots
+code_folder/plots/
