@@ -1,19 +1,62 @@
-# Ignore old files
+# Old/local files
 .old/
 
-# Large rasters
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large raster/GIS files
 *.tif
-*.tifi
 *.tiff
 *.vrt
 *.ovr
 *.aux.xml
 
-# ISTAT boundaries
-code_folder/limiti_istat/
+# GIS/vector boundary files
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.qmd
+*.gpkg
+*.geojson
 
-# Raw downloaded archives
-code_folder/data/raw/
+# Archives
+*.zip
+
+# Fountain-analysis raw/generated data
+code_folder/fountain_analysis/data/raw/*
+!code_folder/fountain_analysis/data/raw/.gitkeep
+
+code_folder/fountain_analysis/data/rasters/*
+!code_folder/fountain_analysis/data/rasters/.gitkeep
+
+code_folder/fountain_analysis/data/fountains/*
+!code_folder/fountain_analysis/data/fountains/.gitkeep
+
+# ISTAT boundaries
+code_folder/fountain_analysis/limiti_istat/
+
+# Natural Earth boundaries
+code_folder/fountain_analysis/ne_10m_admin_0_countries/
 
 # Generated plots
-code_folder/plots/
+code_folder/fountain_analysis/plots/*
+!code_folder/fountain_analysis/plots/.gitkeep
+
+# Temperature-analysis large data bundle
+code_folder/temperature_analysis/data.zip
+code_folder/temperature_analysis/data/

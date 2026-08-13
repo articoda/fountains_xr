@@ -7,10 +7,30 @@ import urllib.request
 import zipfile
 
 
-# Project folder is the parent of the scripts/ folder.
-PROJECT_DIR = Path(__file__).resolve().parents[1]
+# Repository/code folder is the parent of the scripts/ folder.
+CODE_DIR = Path(__file__).resolve().parents[1]
 
-# Make auxi/ importable when running this script from scripts/.
+# Analysis folder containing main.py, auxi/, and the data files.
+PROJECT_DIR = CODE_DIR / "fountain_analysis"
+
+if not PROJECT_DIR.exists():
+    raise FileNotFoundError(
+        f"Analysis folder not found: {PROJECT_DIR}"
+    )
+
+# Temperature-analysis folder.
+# This assumes temperature_analysis/ is a sibling of fountain_analysis/.
+TEMPERATURE_ANALYSIS_DIR = CODE_DIR / "temperature_analysis"
+
+# Expected large temperature data bundle.
+TEMPERATURE_DATA_ZIP = TEMPERATURE_ANALYSIS_DIR / "data.zip"
+
+# Manual download link for the temperature data bundle.
+TEMPERATURE_DATA_URL = (
+    "https://drive.proton.me/urls/Y4T203YJD0#zXrhkVjLqHBk"
+)
+
+# Make fountain_analysis/ importable when running this script from scripts/.
 sys.path.insert(0, str(PROJECT_DIR))
 
 from auxi.population import reproject_population_raster
@@ -34,13 +54,47 @@ ISTAT_LIMITS_URL = (
 
 
 # Local output paths.
-WORLDPOP_FILE = PROJECT_DIR / "ita_ppp_2020_UNadj.tif"
-WORLDPOP_3035_FILE = PROJECT_DIR / "ita_ppp_2020_UNadj_EPSG3035_100m.tif"
+RASTER_DIR = PROJECT_DIR / "data" / "rasters"
+
+WORLDPOP_FILE = RASTER_DIR / "ita_ppp_2020_UNadj.tif"
+WORLDPOP_3035_FILE = RASTER_DIR / "ita_ppp_2020_UNadj_EPSG3035_100m.tif"
 
 DATA_RAW_DIR = PROJECT_DIR / "data" / "raw"
 ISTAT_ZIP_FILE = DATA_RAW_DIR / "Limiti01012026.zip"
 ISTAT_OUTPUT_DIR = PROJECT_DIR / "limiti_istat"
 
+# Folder containing fountain CSV data.
+FOUNTAIN_DIR = PROJECT_DIR / "data" / "fountains"
+
+# Local fountain CSV path.
+FOUNTAIN_FILE = FOUNTAIN_DIR / "italy_20260615.csv"
+
+def check_temperature_data_zip():
+    """
+    Check whether the temperature-analysis data bundle exists.
+
+    The Proton Drive link is intended as a manual download link, not as a
+    direct script-download URL.
+    """
+
+    print()
+    print("Temperature-analysis data")
+    print("-------------------------")
+
+    if TEMPERATURE_DATA_ZIP.exists():
+        print(f"Found: {TEMPERATURE_DATA_ZIP}")
+        return
+
+    print("Temperature data bundle not found.")
+    print()
+    print("Expected file:")
+    print(f"  {TEMPERATURE_DATA_ZIP}")
+    print()
+    print("Please download data.zip manually from:")
+    print(f"  {TEMPERATURE_DATA_URL}")
+    print()
+    print("Then place it here:")
+    print(f"  {TEMPERATURE_ANALYSIS_DIR}")
 
 def download_file(url, output_file):
     """
@@ -147,6 +201,11 @@ def main():
     """
     Download and prepare all external data.
     """
+    # Create raster-data folder if needed.
+    RASTER_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Create fountain-data folder if needed.
+    FOUNTAIN_DIR.mkdir(parents=True, exist_ok=True)
 
     # Download the original WorldPop raster.
     download_file(
@@ -181,8 +240,19 @@ def main():
         output_dir=ISTAT_OUTPUT_DIR
     )
 
+    # Check if fountain csv exists
+    if not FOUNTAIN_FILE.exists():
+        print()
+        print("WARNING: fountain CSV not found.")
+        print(f"Expected file: {FOUNTAIN_FILE}")
+        print("For now, place italy_20260615.csv manually in data/fountains/.")
+    else: print(f'Fountain file exists: {FOUNTAIN_FILE}')
+
     # Check resulting folders.
     check_istat_outputs()
+
+    # Check whether the temperature-analysis data bundle is available.
+    check_temperature_data_zip()
 
     print()
     print("Done. Data are ready.")
