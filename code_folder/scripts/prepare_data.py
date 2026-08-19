@@ -52,6 +52,12 @@ ISTAT_LIMITS_URL = (
     "Limiti01012026.zip"
 )
 
+# Geofabrik Italy OSM extract.
+# This is used to build our own reproducible fountain database locally,
+# instead of relying on Overpass.
+ITALY_OSM_PBF_URL = (
+    "https://download.geofabrik.de/europe/italy-latest.osm.pbf"
+)
 
 # Local output paths.
 RASTER_DIR = PROJECT_DIR / "data" / "rasters"
@@ -63,11 +69,20 @@ DATA_RAW_DIR = PROJECT_DIR / "data" / "raw"
 ISTAT_ZIP_FILE = DATA_RAW_DIR / "Limiti01012026.zip"
 ISTAT_OUTPUT_DIR = PROJECT_DIR / "limiti_istat"
 
+# Local OSM data folder.
+OSM_DIR = PROJECT_DIR / "data" / "osm"
+
+# Local Geofabrik Italy PBF path.
+ITALY_OSM_PBF_FILE = OSM_DIR / "italy-latest.osm.pbf"
+
 # Folder containing fountain CSV data.
 FOUNTAIN_DIR = PROJECT_DIR / "data" / "fountains"
 
-# Local fountain CSV path.
-FOUNTAIN_FILE = FOUNTAIN_DIR / "italy_20260615.csv"
+# Legacy public-repo fountain CSV.
+LEGACY_FOUNTAIN_FILE = FOUNTAIN_DIR / "italy_20260615.csv"
+
+# New reproducible OSM fountain CSV generated from the Geofabrik PBF.
+GENERATED_FOUNTAIN_FILE = FOUNTAIN_DIR / "fountains_osm_clean.csv"
 
 def check_temperature_data_zip():
     """
@@ -96,6 +111,30 @@ def check_temperature_data_zip():
     print("Then place it here:")
     print(f"  {TEMPERATURE_ANALYSIS_DIR}")
 
+def ask_yes_no(question, default="no"):
+    """
+    Ask a yes/no question in the terminal.
+    """
+
+    if default == "yes":
+        prompt = " [Y/n] "
+    else:
+        prompt = " [y/N] "
+
+    while True:
+        answer = input(question + prompt).strip().lower()
+
+        if not answer:
+            answer = default
+
+        if answer in {"y", "yes"}:
+            return True
+
+        if answer in {"n", "no"}:
+            return False
+
+        print("Please answer yes or no.")
+
 def download_file(url, output_file):
     """
     Download a file if it does not already exist.
@@ -123,6 +162,51 @@ def download_file(url, output_file):
 
     print(f"Saved: {output_file}")
 
+def check_or_download_osm_pbf():
+    """
+    Check whether the Geofabrik Italy OSM PBF exists.
+
+    If not, ask before downloading because the file is large.
+    """
+
+    print()
+    print("OSM Italy PBF")
+    print("-------------")
+
+    OSM_DIR.mkdir(parents=True, exist_ok=True)
+
+    if ITALY_OSM_PBF_FILE.exists():
+        print(f"Found: {ITALY_OSM_PBF_FILE}")
+        return
+
+    print("OSM Italy PBF not found.")
+    print()
+    print("Expected file:")
+    print(f"  {ITALY_OSM_PBF_FILE}")
+    print()
+    print("This will download italy-latest.osm.pbf from Geofabrik.")
+    print("Approximate size: about 2 GB.")
+    print()
+
+    should_download = ask_yes_no(
+        "Do you want to download it now?",
+        default="no"
+    )
+
+    if not should_download:
+        print("Skipping OSM PBF download.")
+        print()
+        print("You can download it manually from:")
+        print(f"  {ITALY_OSM_PBF_URL}")
+        print()
+        print("Then place it here:")
+        print(f"  {ITALY_OSM_PBF_FILE}")
+        return
+
+    download_file(
+        url=ITALY_OSM_PBF_URL,
+        output_file=ITALY_OSM_PBF_FILE
+    )
 
 def extract_zip(zip_file, output_dir):
     """
@@ -207,6 +291,9 @@ def main():
     # Create fountain-data folder if needed.
     FOUNTAIN_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Create OSM-data folder if needed.
+    OSM_DIR.mkdir(parents=True, exist_ok=True)
+
     # Download the original WorldPop raster.
     download_file(
         url=WORLDPOP_URL,
@@ -240,13 +327,32 @@ def main():
         output_dir=ISTAT_OUTPUT_DIR
     )
 
-    # Check if fountain csv exists
-    if not FOUNTAIN_FILE.exists():
+    # Check/download the Geofabrik Italy OSM PBF.
+    check_or_download_osm_pbf()
+
+        # Check whether a fountain CSV exists.
+    print()
+    print("Fountain data")
+    print("-------------")
+
+    if GENERATED_FOUNTAIN_FILE.exists():
+        print(f"Found generated OSM fountain file: {GENERATED_FOUNTAIN_FILE}")
+
+    elif LEGACY_FOUNTAIN_FILE.exists():
+        print(f"Found legacy fountain file: {LEGACY_FOUNTAIN_FILE}")
         print()
-        print("WARNING: fountain CSV not found.")
-        print(f"Expected file: {FOUNTAIN_FILE}")
-        print("For now, place italy_20260615.csv manually in data/fountains/.")
-    else: print(f'Fountain file exists: {FOUNTAIN_FILE}')
+        print("Later, replace this with the generated file:")
+        print(f"  {GENERATED_FOUNTAIN_FILE}")
+
+    else:
+        print("WARNING: no fountain CSV found.")
+        print()
+        print("Expected one of:")
+        print(f"  {GENERATED_FOUNTAIN_FILE}")
+        print(f"  {LEGACY_FOUNTAIN_FILE}")
+        print()
+        print("Next step after downloading the PBF:")
+        print("  run the local OSM fountain extraction script")
 
     # Check resulting folders.
     check_istat_outputs()

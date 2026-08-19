@@ -23,6 +23,7 @@ env/
 *.vrt
 *.ovr
 *.aux.xml
+*.pbf
 
 # GIS/vector boundary files
 *.shp
